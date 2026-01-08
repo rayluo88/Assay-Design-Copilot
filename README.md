@@ -57,6 +57,23 @@ graph TD
     Reporter -->|report.md| Output
 ```
 
+
+## 🛠️ Technical Stack
+
+This project leverages a modern, type-safe Python stack designed for reliability and developer experience.
+
+| Category | Technology | Purpose |
+|---|---|---|
+| **Language** | ![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python&logoColor=white) | Core runtime environment. |
+| **Orchestration** | **LangGraph** | Determining the execution graph (Plan → Execute → Verify). |
+| **Data Validation** | **Pydantic V2** | Enforcing strict compile-time and runtime data contracts. |
+| **CLI Framework** | **Typer** | Building the robust command-line interface with auto-completion. |
+| **Bioinformatics** | **primer3-py** | The industry-standard C library for thermodynamic primer design. |
+| **Bioinformatics** | **Biopython** | Sequence manipulation and standard format (FASTA) parsing. |
+| **Testing** | **Pytest** | Comprehensive unit and integration testing suite. |
+
+---
+
 ## 🚀 Key Architectural Decisions
 
 ### 1. The "Framework-First" Approach
