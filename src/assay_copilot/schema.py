@@ -21,7 +21,7 @@ class DesignRequest(BaseModel):
     target_sequence: str = Field(..., description="Target DNA sequence in FASTA format or raw string")
     assay_type: AssayType = Field(default=AssayType.qPCR, description="Type of assay to design")
     target_tm: float = Field(default=60.0, description="Target melting temperature for primers")
-    allowed_product_size: List[int] = Field(default=[70, 150], description="Range [min, max] for amplicon size")
+    allowed_product_size: List[int] = Field(default=[75, 200], description="Range [min, max] for amplicon size")
     name: Optional[str] = Field(None, description="Optional name for the design job")
 
     @field_validator('target_sequence')
