@@ -59,8 +59,8 @@ class Primer3Engine(BaseTool):
             # Guidelines: Probe Tm should be ~10C higher than primers to ensure binding before extension.
             target_tm = request.target_tm
             global_args['PRIMER_INTERNAL_OPT_TM'] = target_tm + 10.0
-            global_args['PRIMER_INTERNAL_MIN_TM'] = target_tm + 7.0
-            global_args['PRIMER_INTERNAL_MAX_TM'] = target_tm + 13.0
+            global_args['PRIMER_INTERNAL_MIN_TM'] = target_tm + 5.0
+            global_args['PRIMER_INTERNAL_MAX_TM'] = target_tm + 15.0
 
         # 3. Running Primer3
         results = primer3.bindings.design_primers(seq_args, global_args)

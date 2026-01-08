@@ -85,5 +85,5 @@ def test_primer3_internal_tm_params():
         # Check Probe Params
         assert global_args['PRIMER_PICK_INTERNAL_OLIGO'] == 1
         assert global_args['PRIMER_INTERNAL_OPT_TM'] == 70.0  # 60 + 10
-        assert global_args['PRIMER_INTERNAL_MIN_TM'] == 67.0  # 60 + 7
-        assert global_args['PRIMER_INTERNAL_MAX_TM'] == 73.0  # 60 + 13
+        assert global_args['PRIMER_INTERNAL_MIN_TM'] == 65.0  # 60 + 5
+        assert global_args['PRIMER_INTERNAL_MAX_TM'] == 75.0  # 60 + 15
