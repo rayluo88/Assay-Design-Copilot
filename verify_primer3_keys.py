@@ -17,7 +17,7 @@ def test_keys():
         'PRIMER_OPT_TM': 60.0,
         'PRIMER_MIN_TM': 57.0,
         'PRIMER_MAX_TM': 63.0,
-        'PRIMER_PRODUCT_SIZE_RANGE': [[75, 200]],
+        'PRIMER_PRODUCT_SIZE_RANGE': [[70, 200]],
     }
     
     # We want to force a FAIL by setting MIN_TM to 90.0
