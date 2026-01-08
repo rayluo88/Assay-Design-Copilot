@@ -54,7 +54,13 @@ class Primer3Engine(BaseTool):
         # Primer3 'generic' can design probes if we ask
         if request.assay_type in ["qPCR", "dPCR"]:
             global_args['PRIMER_PICK_INTERNAL_OLIGO'] = 1
-            global_args['PRIMER_OPT_TM_INTERNAL'] = request.target_tm + 10.0 # Common rule: probe Tm > primer Tm
+            
+            # Correct keys for internal oligo (probe) Tm
+            # Guidelines: Probe Tm should be ~10C higher than primers to ensure binding before extension.
+            target_tm = request.target_tm
+            global_args['PRIMER_INTERNAL_OPT_TM'] = target_tm + 10.0
+            global_args['PRIMER_INTERNAL_MIN_TM'] = target_tm + 7.0
+            global_args['PRIMER_INTERNAL_MAX_TM'] = target_tm + 13.0
 
         # 3. Running Primer3
         results = primer3.bindings.design_primers(seq_args, global_args)

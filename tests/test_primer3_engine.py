@@ -47,7 +47,7 @@ def test_primer3_execution_flow(mock_primer3_lib):
     assert c.amplicon_size == 110
     
     # Verify call args
-    args, _ = mock_primer3_lib.bindings.designPrimers.call_args
+    args, _ = mock_primer3_lib.bindings.design_primers.call_args
     input_seqs = args[0]
     assert input_seqs['SEQUENCE_TEMPLATE'] == "A" * 200
 
@@ -58,6 +58,32 @@ def test_primer3_no_results():
         }
         
         engine = Primer3Engine()
-        req = DesignRequest(target_sequence="ATCG", assay_type=AssayType.qPCR)
+        req = DesignRequest(target_sequence="A" * 100, assay_type=AssayType.qPCR)
         candidates = engine.execute(req)
         assert len(candidates) == 0
+
+def test_primer3_internal_tm_params():
+    """Verify that qPCR request sets correct internal oligo (probe) Tm parameters."""
+    with patch('assay_copilot.primer3_engine.primer3') as mock_lib:
+        # Mock Return
+        mock_lib.bindings.design_primers.return_value = {'PRIMER_PAIR_NUM_RETURNED': 0}
+        
+        engine = Primer3Engine()
+        req = DesignRequest(
+            target_sequence="A" * 200, 
+            assay_type=AssayType.qPCR,
+            target_tm=60.0
+        )
+        
+        # Execute
+        engine.execute(req)
+        
+        # Verify call args
+        args, kwargs = mock_lib.bindings.design_primers.call_args
+        global_args = args[1]
+        
+        # Check Probe Params
+        assert global_args['PRIMER_PICK_INTERNAL_OLIGO'] == 1
+        assert global_args['PRIMER_INTERNAL_OPT_TM'] == 70.0  # 60 + 10
+        assert global_args['PRIMER_INTERNAL_MIN_TM'] == 67.0  # 60 + 7
+        assert global_args['PRIMER_INTERNAL_MAX_TM'] == 73.0  # 60 + 13
