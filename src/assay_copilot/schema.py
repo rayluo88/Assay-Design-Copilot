@@ -6,7 +6,7 @@ that serve as the typed data contract passed between the Agent's tools and workf
 """
 from enum import Enum
 from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 class AssayType(str, Enum):
     qPCR = "qPCR"
@@ -23,6 +23,34 @@ class DesignRequest(BaseModel):
     target_tm: float = Field(default=60.0, description="Target melting temperature for primers")
     allowed_product_size: List[int] = Field(default=[70, 150], description="Range [min, max] for amplicon size")
     name: Optional[str] = Field(None, description="Optional name for the design job")
+
+    @field_validator('target_sequence')
+    @classmethod
+    def validate_sequence(cls, v: str) -> str:
+        # 1. Sanitize: Remove all whitespace (including newlines) and uppercase
+        v = "".join(v.split()).upper()
+        
+        # 2. Check Length (Primer3 needs space for primers + amplicon)
+        # Min length: ~100bp is a safe lower bound for a robust demo
+        if len(v) < 100:
+            raise ValueError(
+                f"Target sequence is too short ({len(v)} bp). "
+                "Minimum required length is 100 bp to allow for proper primer design."
+            )
+            
+        # 3. Check Alphabet (IUPAC DNA)
+        valid_chars = set("ATCGNRYMKSWHBVD")
+        if not set(v).issubset(valid_chars):
+            invalid_chars = set(v) - valid_chars
+            raise ValueError(
+                f"Sequence contains invalid characters: {invalid_chars}. "
+                "Only standard IUPAC DNA characters (A, T, C, G, N, ...) are allowed."
+            )
+            
+        return v
+
+
+
 
 class Oligo(BaseModel):
     """Represents a single primer or probe."""

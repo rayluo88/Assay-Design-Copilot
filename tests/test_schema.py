@@ -12,14 +12,30 @@ from pydantic import ValidationError
 from assay_copilot.schema import DesignRequest, AssayType, Oligo, Strand
 
 def test_design_request_defaults():
-    req = DesignRequest(target_sequence="ATCG")
+    req = DesignRequest(target_sequence="A" * 100)
     assert req.assay_type == AssayType.qPCR
     assert req.target_tm == 60.0
 
 def test_design_request_validation():
-    with pytest.raises(ValidationError):
-        # Missing required field
-        DesignRequest()
+    """Test validation of target_sequence."""
+    # 1. Valid Sequence
+    req = DesignRequest(target_sequence="A" * 100)
+    assert req.target_sequence == "A" * 100
+    
+    # 2. Sanitization (whitespace + lowercase)
+    req = DesignRequest(target_sequence="  atcg" * 25 + "  ")
+    assert " " not in req.target_sequence
+    assert req.target_sequence.isupper()
+    
+    # 3. Too Short
+    with pytest.raises(ValidationError) as exc:
+        DesignRequest(target_sequence="ACGT")
+    assert "too short" in str(exc.value)
+    
+    # 4. Invalid Characters
+    with pytest.raises(ValidationError) as exc:
+        DesignRequest(target_sequence=("A" * 100) + "1")
+    assert "invalid characters" in str(exc.value)
 
 def test_oligo_creation():
     oligo = Oligo(

@@ -33,12 +33,21 @@ def design(
     run_dir = Path(out_dir) / name
     run_dir.mkdir(parents=True, exist_ok=True)
     
-    # 2. Create Request
-    req = DesignRequest(
-        target_sequence=sequence,
-        name=name,
-        assay_type=AssayType(assay_type)
-    )
+    # 2. Create Request (with validation)
+    try:
+        req = DesignRequest(
+            target_sequence=sequence,
+            name=name,
+            assay_type=AssayType(assay_type)
+        )
+    except Exception as e:
+        print(f"[ERROR] Invalid Input: {e}")
+        # Provide user-friendly hints for common errors
+        if "too short" in str(e):
+            print("HINT: Please provide a sequence of at least 100 base pairs.")
+        if "invalid characters" in str(e):
+            print("HINT: Valid characters are A, T, C, G, N (and IUPAC ambiguity codes). Numbers and whitespace are not allowed.")
+        raise typer.Exit(code=1)
     
     # 3. Initialize State
     initial_state = AgentState(
