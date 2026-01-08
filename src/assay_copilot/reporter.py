@@ -19,7 +19,8 @@ class MarkdownReporter:
         lines.append("\n## Top Candidates")
         
         if artifact.best_candidate_index is not None:
-             lines.append(f"**Best Candidate:** #{artifact.best_candidate_index}")
+             # Display 1-based index for user friendliness
+             lines.append(f"**Best Candidate:** #{artifact.best_candidate_index + 1}")
         else:
              lines.append("**Status:** No valid candidates found.")
              
@@ -37,7 +38,8 @@ class MarkdownReporter:
             size = cand.amplicon_size
             
             # Bold the best row
-            row = f"| {i} | {fwd_tm} | {rev_tm} | {probe_tm} | {size} | {score} | {status} |"
+            # Use i + 1 for display ID
+            row = f"| {i + 1} | {fwd_tm} | {rev_tm} | {probe_tm} | {size} | {score} | {status} |"
             if i == artifact.best_candidate_index:
                 row = f"**{row}**"
                 
@@ -45,7 +47,7 @@ class MarkdownReporter:
             
         lines.append("\n## Design Details")
         for i, cand in enumerate(artifact.candidates):
-            lines.append(f"\n### Candidate {i}")
+            lines.append(f"\n### Candidate {i + 1}")
             lines.append("```")
             lines.append(f"Forward: {cand.forward_primer.sequence} ({cand.forward_primer.tm:.1f}C)")
             lines.append(f"Reverse: {cand.reverse_primer.sequence} ({cand.reverse_primer.tm:.1f}C)")
