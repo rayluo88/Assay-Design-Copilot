@@ -74,7 +74,10 @@ def design(
         f.write(report_content)
         
     print(f"Done! Results saved to {run_dir}")
-    print(f"Best Candidate Index: {artifact.best_candidate_index}")
+    if artifact.best_candidate_index is not None:
+        print(f"Best Candidate Index: {artifact.best_candidate_index + 1}")
+    else:
+        print("Best Candidate Index: None")
 
 if __name__ == "__main__":
     cli()
