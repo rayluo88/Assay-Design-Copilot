@@ -115,7 +115,7 @@ Run the copilot to design primers for a target sequence:
 python -m assay_copilot.main --help
 
 # Run design
-python -m assay_copilot.main design \
+python -m assay_copilot.main \
   --sequence "TCGATCGTAGCTAGCTAGCATGCTAGCTAGCTAGCTAGCTAGCTAGCTCGATCGTAGCTAGCTAGCATGCTAGCTAGCTAGCTAGCTAGCTAGCTCGATCGTAGCTAGCTAGCATGCTAGCTAGCTAGCTAGCTAGCTAGCTCGATCGTAGC" \
   --name "MyAssay01" \
   --assay-type qPCR \
