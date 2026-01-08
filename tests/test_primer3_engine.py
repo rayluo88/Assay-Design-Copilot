@@ -15,7 +15,7 @@ from assay_copilot.schema import AssayType, DesignRequest
 @patch('assay_copilot.primer3_engine.primer3')
 def test_primer3_execution_flow(mock_primer3_lib):
     # Setup mock return
-    mock_primer3_lib.bindings.designPrimers.return_value = {
+    mock_primer3_lib.bindings.design_primers.return_value = {
         'PRIMER_PAIR_NUM_RETURNED': 1,
         'PRIMER_LEFT_0': (10, 20),
         'PRIMER_LEFT_0_TM': 60.0,
@@ -53,7 +53,7 @@ def test_primer3_execution_flow(mock_primer3_lib):
 
 def test_primer3_no_results():
     with patch('assay_copilot.primer3_engine.primer3') as mock_lib:
-        mock_lib.bindings.designPrimers.return_value = {
+        mock_lib.bindings.design_primers.return_value = {
             'PRIMER_PAIR_NUM_RETURNED': 0
         }
         

@@ -57,7 +57,7 @@ class Primer3Engine(BaseTool):
             global_args['PRIMER_OPT_TM_INTERNAL'] = request.target_tm + 10.0 # Common rule: probe Tm > primer Tm
 
         # 3. Running Primer3
-        results = primer3.bindings.designPrimers(seq_args, global_args)
+        results = primer3.bindings.design_primers(seq_args, global_args)
 
         # 4. Parsing Results
         candidates = []
