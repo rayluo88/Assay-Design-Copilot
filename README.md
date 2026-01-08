@@ -111,6 +111,10 @@ pip install -e .
 Run the copilot to design primers for a target sequence:
 
 ```bash
+# View all options
+python -m assay_copilot.main --help
+
+# Run design
 python -m assay_copilot.main design \
   --sequence "TCGATCGTAGCTAGCTAGCATGCTAGCTAGCTAGCTAGCTAGCTAGCTCGATCGTAGCTAGCTAGCATGCTAGCTAGCTAGCTAGCTAGCTAGCTCGATCGTAGCTAGCTAGCATGCTAGCTAGCTAGCTAGCTAGCTAGCTCGATCGTAGC" \
   --name "MyAssay01" \
