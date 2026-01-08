@@ -5,6 +5,11 @@ The command-line interface for the Assay Design Copilot.
 It handles argument parsing, initializes the workflow state, triggers the `LangGraph` execution,
 and saves the final artifacts and reports to disk.
 """
+import warnings
+
+# Suppress Pydantic V1 compatibility warnings from LangChain on newer Python versions
+warnings.filterwarnings("ignore", message=".*Core Pydantic V1 functionality.*")
+
 import typer
 import json
 import os
