@@ -37,11 +37,11 @@ class MarkdownReporter:
             probe_tm = f"{cand.probe.tm:.1f}" if cand.probe else "-"
             size = cand.amplicon_size
             
-            # Bold the best row
-            # Use i + 1 for display ID
-            row = f"| {i + 1} | {fwd_tm} | {rev_tm} | {probe_tm} | {size} | {score} | {status} |"
+            # Bold the best row (apply formatting to each cell content)
             if i == artifact.best_candidate_index:
-                row = f"**{row}**"
+                row = f"| **{i + 1}** | **{fwd_tm}** | **{rev_tm}** | **{probe_tm}** | **{size}** | **{score}** | **{status}** |"
+            else:
+                row = f"| {i + 1} | {fwd_tm} | {rev_tm} | {probe_tm} | {size} | {score} | {status} |"
                 
             lines.append(row)
             
