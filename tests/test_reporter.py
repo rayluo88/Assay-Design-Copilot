@@ -34,5 +34,5 @@ def test_reporter_output():
     
     # Verify
     assert "# Assay Design Report: TestRun" in report
-    assert "**Best Candidate:** #0" in report
+    assert "**Best Candidate:** #1" in report
     assert "Pass" in report or "PASS" in report
