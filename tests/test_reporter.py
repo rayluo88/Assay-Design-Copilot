@@ -11,7 +11,7 @@ from assay_copilot.schema import DesignArtifact, DesignRequest, AssayType, Desig
 
 def test_reporter_output():
     # Mock Data
-    req = DesignRequest(target_sequence="AAA", name="TestRun")
+    req = DesignRequest(target_sequence="A"*100, name="TestRun")
     
     oligo = Oligo(sequence="A", tm=50, gc_percent=50, length=1, start=0, end=1, strand=Strand.PLUS)
     cand = DesignCandidate(
