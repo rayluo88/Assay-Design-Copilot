@@ -10,6 +10,24 @@
 
 ---
 
+## 🎯 What Does This App Do?
+
+The **Assay Design Copilot** is an AI powered agent that automates the end-to-end design of PCR assays (qPCR/dPCR). It takes a target DNA sequence and autonomously produces ranking-scored primer & probe candidates, validated against quality control rules, and packaged into a reproducible clinical design report.
+
+### The Problem it Solves
+Manual assay design is a bottleneck in molecular diagnostics:
+- **Time Consuming**: Scientists spend hours manually copying sequences between Primer3, BLAST, and Excel.
+- **Error Prone**: Manual data entry leads to transcription errors and failed experiments.
+- **Lack of Reproducibility**: "Vibes-based" selection decisions are rarely documented, making it impossible to audit why a specific primer pair was chosen months later.
+
+### The Solution
+This Copilot transforms design into a **Software Enigineering Problem**:
+1.  **Standardized Inputs**: Strict Pydantic schemas for requests.
+2.  **Deterministic Execution**: Every tool call is scored and logged.
+3.  **Traceable Decisions**: Full audit trails for every candidate generation and rejection.
+
+---
+
 ## 🏗️ System Architecture
 
 This project is not just a collection of scripts; it is a **Compound AI System** designed to orchestrate bioinformatics tools deterministically while allowing for future LLM integration.
@@ -73,10 +91,18 @@ Every tool execution is intercepted and logged to a structured trace.
 
 ## 📦 Installation
 
-Requires Python 3.11+.
+It is best practice to run this project in a dedicated virtual environment to avoid conflicts with other projects (like `primer-design-automation`).
 
 ```bash
-pip install -e ".[dev]"
+# 1. Create a virtual environment
+python3 -m venv venv
+
+# 2. Activate the environment
+source venv/bin/activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+pip install -e .
 ```
 
 ## 💻 Usage
