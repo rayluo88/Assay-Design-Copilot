@@ -36,3 +36,6 @@ htmlcov/
 .vscode/
 .idea/
 *.swp
+
+# Output
+runs/
