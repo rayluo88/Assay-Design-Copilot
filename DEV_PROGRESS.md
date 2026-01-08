@@ -83,4 +83,4 @@
 *Goal: Ready for the interview.*
 
 - [x] **6.1: README & Usage Docs**
-- [ ] **6.2: Demo Script Verification** (Ensure `design` command works live).
+- [x] **6.2: Demo Script Verification** (Ensure `design` command works live).
