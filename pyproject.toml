@@ -1,0 +1,34 @@
+[project]
+name = "assay-design-copilot"
+version = "0.1.0"
+description = "Agentic Assay Design Copilot for qPCR/dPCR"
+requires-python = ">=3.11"
+readme = "README.md"
+authors = [
+    { name = "Raymond Luo", email = "raymond@example.com" }
+]
+dependencies = [
+    "pydantic>=2.0.0",
+    "typer>=0.9.0",
+    "primer3-py>=2.0.0",
+    "biopython>=1.80",
+    "langgraph>=0.0.10",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "isort>=5.0.0",
+    "mypy>=1.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+action = "ignore::DeprecationWarning"

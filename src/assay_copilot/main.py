@@ -1,0 +1,66 @@
+"""
+CLI Entrypoint.
+
+The command-line interface for the Assay Design Copilot.
+It handles argument parsing, initializes the workflow state, triggers the `LangGraph` execution,
+and saves the final artifacts and reports to disk.
+"""
+import typer
+import json
+import os
+from pathlib import Path
+from .workflow import app, AgentState
+from .schema import DesignRequest, AssayType, DesignArtifact
+from .reporter import MarkdownReporter
+
+cli = typer.Typer()
+
+@cli.command()
+def design(
+    sequence: str = typer.Option(..., help="Target DNA sequence"),
+    name: str = typer.Option("my_assay", help="Name of the design job"),
+    assay_type: str = typer.Option("qPCR", help="Assay type (qPCR/dPCR)"),
+    out_dir: str = typer.Option("./runs", help="Output directory")
+):
+    """Run the Assay Design Copilot."""
+    
+    # 1. Setup Run Dir
+    run_dir = Path(out_dir) / name
+    run_dir.mkdir(parents=True, exist_ok=True)
+    
+    # 2. Create Request
+    req = DesignRequest(
+        target_sequence=sequence,
+        name=name,
+        assay_type=AssayType(assay_type)
+    )
+    
+    # 3. Initialize State
+    initial_state = AgentState(
+        request=req,
+        candidates=[],
+        qc_results={},
+        artifact=None
+    )
+    
+    # 4. Run Workflow
+    print(f"Starting design for {name} ({assay_type})...")
+    final_state = app.invoke(initial_state)
+    artifact: DesignArtifact = final_state['artifact']
+    
+    # 5. Save Artifacts
+    # JSON
+    with open(run_dir / "artifact.json", "w") as f:
+        f.write(artifact.model_dump_json(indent=2))
+        
+    # Report
+    reporter = MarkdownReporter()
+    report_content = reporter.generate(artifact)
+    with open(run_dir / "report.md", "w") as f:
+        f.write(report_content)
+        
+    print(f"Done! Results saved to {run_dir}")
+    print(f"Best Candidate Index: {artifact.best_candidate_index}")
+
+if __name__ == "__main__":
+    cli()
