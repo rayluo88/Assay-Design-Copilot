@@ -42,6 +42,37 @@ class QCEngine(BaseTool):
             score -= 0.1 * tm_diff
         else:
             checks['tm_balance'] = "PASS"
+            
+        # Check 3: Primer3 Penalty (Lower is better)
+        # Primer3 penalty usually ranges 0.1 - 5.0+ for decent primers
+        # We penalize score based on this.
+        p3_penalty = candidate.penalty
+        if p3_penalty is not None:
+             # Deduction: 0.1 per penalty point
+             deduction = p3_penalty * 0.1
+             score -= deduction
+             checks['p3_penalty'] = p3_penalty
+
+        # Check 4: Probe Tm Optimization
+        # Probe Tm should be ~10C higher than primers.
+        if candidate.probe:
+            avg_primer_tm = (fwd_tm + rev_tm) / 2
+            optimal_probe_tm = avg_primer_tm + 10.0
+            probe_tm_diff = abs(candidate.probe.tm - optimal_probe_tm)
+            checks['probe_tm_diff'] = probe_tm_diff
+            
+            # Penalize deviation from optimal (0.05 deduction per degree off)
+            score -= 0.05 * probe_tm_diff
+            
+        # Check 3: Primer3 Penalty (Lower is better)
+        # Primer3 penalty usually ranges 0.1 - 5.0+ for decent primers
+        # We penalize score based on this.
+        p3_penalty = candidate.penalty
+        if p3_penalty is not None:
+             # Deduction: 0.1 per penalty point
+             deduction = p3_penalty * 0.1
+             score -= deduction
+             checks['p3_penalty'] = p3_penalty
 
         # Determine Status
         if score < 0.5:
